@@ -5,10 +5,10 @@ function App() {
 	const [value, setValue] = useState(50);
 
 	return (
-		<div class="wrapper">
-			<div class="amount">
+		<div className="wrapper">
+			<div className="amount">
 				<sup>$</sup>
-				<span class="dollars">{value}</span>
+				<span className="dollars">{value}</span>
 			</div>
 			<input
 				type="range"
@@ -21,7 +21,6 @@ function App() {
 			/>
 			<br />
 			<button>Buy Now</button>
-			<script src="app.js"></script>
 		</div>
 	);
 }
