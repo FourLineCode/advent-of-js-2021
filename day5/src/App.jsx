@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-const episodes = [
+const original = [
 	{
 		id: 1,
 		checked: false,
@@ -190,20 +190,22 @@ const episodes = [
 ];
 
 function App() {
+	const [episodes, setEpisodes] = useState(original);
 	const [prev, setPrev] = useState(null);
 	const [shift, setShift] = useState(false);
 
-	const onChange = (e, index) => {
-		if (!shift) {
-			episodes[index].checked = !episodes[index].checked;
+	// Only works on chrome [because firefox doesnt let shift+click event fallthrough on checkboxes]
+	const onChange = (index) => {
+		const ep = [...episodes];
+		if (!shift || prev === null) {
+			ep[index].checked = !ep[index].checked;
+			if (ep[index].checked) setPrev(index);
 		} else if (shift) {
-			const m = [...map];
 			const min = Math.min(prev, index);
 			const max = Math.max(prev, index);
-			for (let i = min; i <= max; i++) m[i] = true;
-			console.log(m);
-			setMap(m);
+			for (let i = min; i <= max; i++) ep[i].checked = true;
 		}
+		setEpisodes(ep);
 	};
 
 	const onKeyDown = (e) => {
@@ -239,9 +241,9 @@ function App() {
 									type="checkbox"
 									name={`episode-${episode.id}`}
 									id={`episode-${episode.id}`}
+									value={episode.checked}
 									checked={episode.checked}
-									onChange={(e) => onChange(e, index)}
-									onInput={() => setPrev(episode.id)}
+									onChange={() => onChange(index)}
 								/>
 								<span>
 									{episode.id} || {episode.name}
